@@ -32,7 +32,7 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-app.post("/api/shorturl/new",urlHandler.addUrl);
+app.all("/api/shorturl/new",urlHandler.addUrl);
 
 app.listen(port, function () {
   console.log('Node.js listening ...');
