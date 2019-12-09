@@ -3,8 +3,9 @@
 var express = require('express');
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
-
 var cors = require('cors');
+
+var urlHandler = require('./controllers/URLHandler.js');
 
 var app = express();
 
@@ -31,7 +32,7 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-app.post("/api/shorturl/new",)
+app.post("/api/shorturl/new",urlHandler.addUrl);
 
 app.listen(port, function () {
   console.log('Node.js listening ...');
