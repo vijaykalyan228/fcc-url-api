@@ -14,6 +14,11 @@ var app = express();
 var port = process.env.PORT || 3000;
 
 /** this project needs a db !! **/
+const mongoUrl = "mongodb+srv://admin:admin@fccnodecluster-uv7h5.mongodb.net/test?retryWrites=true&w=majority";
+mongoose.connect(mongoUrl, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
 // mongoose.connect(process.env.MONGOLAB_URI);
 
 app.use(cors());
@@ -36,6 +41,8 @@ app.get('/', function(req, res) {
 
 // your first API endpoint... 
 app.get("/api/hello", function(req, res) {
+
+    console.log(mongoose.connection.readyState);
     res.json({ greeting: 'hello API' });
 });
 

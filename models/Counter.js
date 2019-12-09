@@ -5,34 +5,30 @@ var mongo = require('mongodb');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var Counter = new Schema({
+var counterSchema = new Schema({
     count: { type: Number, default: 1 }
 });
+
+var Counter = mongoose.model('Counter', counterSchema);
 
 var counter;
 
 var nextVal = function(callback) {
-    const mongoUrl = "mongodb+srv://admin:admin@fccnodecluster-uv7h5.mongodb.net/test?retryWrites=true&w=majority";
-    mongoose.connect(mongoUrl, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    });
 
-    Counter.findOneAndUpdate({}, { $inc: { 'count': 1 } }, (err, data) => {
-        if (err) return;
-        if (data) {
-            callback(data.count);
-        } else {
-            new Counter().save((err) => {
-                if (err) return;
-                Counter.findOneAndUpdate({}, { $inc: { 'count': 1 } }, (err, data) => {
-                    if (err) return;
-                    callback(data.count);
-                });
-            });
-        }
-    });
+    //Update Here to Model
+    if (counter == null) {
+        counter = new Counter({ count: 1 });
+        counter.save();
+        callback(1);
+    } else {
+        counter.update({ $inc: { count: 1 } }, (err, res) => {
+            if (err) return;
+            console.log('Else: ' + counter.count);
+            callback(counter.count);
+        });
+    }
 };
 
 // export default model('Counter', Counter);
-exports.nextVal = nextVal;
+// exports.nextVal = nextVal;
+module.exports = mongoose.model('Counter', counterSchema);
