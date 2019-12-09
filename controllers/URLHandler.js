@@ -8,5 +8,7 @@ var bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: false }))
 
 exports.addUrl = function(req,res){
-  res.send(req.params);
+  var url = req.body.url;
+  
+  
 }
