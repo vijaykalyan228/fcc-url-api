@@ -35,9 +35,9 @@ exports.addUrl = function(req, res) {
     }
 
     // Check dns and update url record
-    console.log(url);
+    // console.log(new URL(url).hostname);
 
-    dns.lookup(url, (err) => {
+    dns.lookup(new URL(url).hostname, (err) => {
         if (err) {
             res.json({ "error": "invalid Hostname" });
         } else {
@@ -64,4 +64,29 @@ exports.addUrl = function(req, res) {
             });
         }
     });
-}
+};
+
+
+exports.sendRedirect = function(req, res) {
+    // console.log(req.params.index);
+    const index = req.params.index;
+    if (!parseInt(index, 10)) {
+        // The short URL identifier is not a number
+        res.json({ "error": "The short URL identifier is not a number" });
+        return;
+    }
+
+    UrlRecord
+        .findOne({ 'index': index })
+        .then((data) => {
+            if (data) {
+                res.redirect(301, data.url);
+            } else {
+                res.json({ "error": "No short url found for given input" });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            return;
+        });
+};

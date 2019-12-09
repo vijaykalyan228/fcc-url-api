@@ -46,6 +46,7 @@ app.get("/api/hello", function(req, res) {
 });
 
 app.post("/api/shorturl/new", urlHandler.addUrl);
+app.get("/api/shorturl/:index", urlHandler.sendRedirect);
 
 app.listen(port, function() {
     console.log('Node.js listening ...');
